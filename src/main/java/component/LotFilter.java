@@ -26,7 +26,7 @@ public class LotFilter implements Filter {
         Optional<Lot> byId = lotDao.getById(Integer.parseInt(id));
         if (byId.isPresent()){
             if (!byId.get().isActive()){
-                response.getWriter().print(gson.toJson(new Message(410, "Lot Has been closed", null)));
+                response.getWriter().print(gson.toJson(new Message(403, "Lot Has been closed", null)));
                 response.getWriter().close();
             }
         } else {

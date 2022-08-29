@@ -16,6 +16,7 @@ public class LotServiceImpl implements LotService {
     private static LotService lotService = new LotServiceImpl();
     private final LotDao lotDao = LotDaoImpl.getLotDao();
     private final BidDao bidDao = BidDaoImpl.getBidDao();
+
     public static LotService getLotService() {
         if (lotService == null) {
             lotService = new LotServiceImpl();
@@ -31,10 +32,10 @@ public class LotServiceImpl implements LotService {
         lot.setInitialPrice(initialPrice);
         lot.setUser(user);
         lot.setDescription(description);
-        if (lotDao.save(lot)){
-            message = new Message(205,"saved", model);
+        if (lotDao.save(lot)) {
+            message = new Message(202, "saved", model);
         } else {
-            message = new Message(401, "data has not been saved", null);
+            message = new Message(403, "data has not been saved", null);
         }
         return message;
     }
@@ -44,10 +45,14 @@ public class LotServiceImpl implements LotService {
         Message message;
         boolean lot = lotDao.closeLot(id);
         Optional<Bid> maxBid = bidDao.getMaxBid(id);
-        if (lot){
-            message = new Message(210, "lot closed", maxBid.get());
+        if (maxBid.isPresent()){
+            if (lot) {
+                message = new Message(201, "lot closed", maxBid.get());
+            } else {
+                message = new Message(403, "could not close", null);
+            }
         } else {
-            message = new Message(409, "could not close", null);
+            message = new Message(403, "You can't close the lot without any bids", null);
         }
         return message;
     }

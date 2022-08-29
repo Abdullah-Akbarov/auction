@@ -1,18 +1,16 @@
 package dao.impl;
 
 import dao.BidDao;
-import dao.LotDao;
 import dao.PostgresConnection;
 import model.Bid;
 import model.Lot;
 import model.User;
 
 import java.sql.*;
-import java.util.List;
 import java.util.Optional;
 
 public class BidDaoImpl implements BidDao {
-    private static Connection con = PostgresConnection.getInstance();
+    private final Connection con = PostgresConnection.getInstance();
     private static BidDao bidDao;
     public static BidDao getBidDao(){
         if (bidDao==null){

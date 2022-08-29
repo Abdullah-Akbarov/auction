@@ -6,11 +6,12 @@ import model.Lot;
 import model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class LotDaoImpl implements LotDao {
-    private static Connection con = PostgresConnection.getInstance();
+    private final Connection con = PostgresConnection.getInstance();
     private static LotDao lotDao;
     public static LotDao getLotDao(){
         if (lotDao==null){
@@ -72,5 +73,25 @@ public class LotDaoImpl implements LotDao {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public List<Lot> getAll() {
+        List<Lot> list = new ArrayList<>();
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT * from lot where is_active <> false");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                int id = resultSet.getInt(1);
+                String model = resultSet.getString(2);
+                String description = resultSet.getString(3);
+                double initialPrice = resultSet.getDouble(4);
+                Timestamp dateStarted = resultSet.getTimestamp(5);
+                list.add(new Lot(id, model, description, initialPrice, dateStarted));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 }

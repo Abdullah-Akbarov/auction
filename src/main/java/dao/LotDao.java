@@ -10,4 +10,5 @@ public interface LotDao{
     Optional<Lot> getById(Integer id);
     boolean checkBid(Integer lotId, double bid);
     boolean closeLot(Integer id);
+    List<Lot> getAll();
 }
