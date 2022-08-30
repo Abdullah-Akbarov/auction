@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/get-bids")
-public class GetBidsController extends HttpServlet {
+@WebServlet("/view-bids")
+public class ViewBidsController extends HttpServlet {
     private final BidService bidService = BidServiceImpl.getBidService();
     private final Gson gson = new Gson();
 
