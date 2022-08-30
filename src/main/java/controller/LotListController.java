@@ -18,7 +18,7 @@ public class LotListController extends HttpServlet {
     private final LotDao lotDao = LotDaoImpl.getLotDao();
     private final Gson gson = new Gson();
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Lot> all = lotDao.getAll();
         resp.setContentType("application/json");
         resp.getWriter().print(gson.toJson(all));

@@ -18,7 +18,7 @@ public class CloseLotController extends HttpServlet {
     private final Gson gson = new Gson();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         Message message = lotService.closeLot(Integer.valueOf(id));
         resp.setContentType("application/json");
