@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebFilter("/close-lot")
+@WebFilter("/*")
 public class LotFilter implements Filter {
     private final Gson gson = new Gson();
     private final LotDao lotDao = LotDaoImpl.getLotDao();
@@ -23,17 +23,22 @@ public class LotFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String id = request.getParameter("id");
-        Optional<Lot> byId = lotDao.getById(Integer.parseInt(id));
-        if (byId.isPresent()){
-            if (!byId.get().isActive()){
-                response.getWriter().print(gson.toJson(new Message(403, "Lot already been closed", null)));
-                response.getWriter().close();
+        String uri = request.getRequestURI();
+        if (uri.startsWith("/close-lot") || uri.startsWith("/bid")) {
+            Optional<Lot> byId = lotDao.getById(Integer.parseInt(id));
+            if (byId.isPresent()) {
+                if (!byId.get().isActive()) {
+                    response.getWriter().print(gson.toJson(new Message(403, "Lot already been closed", null)));
+                    response.getWriter().close();
+                } else {
+                    filterChain.doFilter(servletRequest, servletResponse);
+                }
             } else {
-                filterChain.doFilter(servletRequest, servletResponse);
+                response.getWriter().print(gson.toJson(new Message(404, "Not Found", null)));
+                response.getWriter().close();
             }
         } else {
-            response.getWriter().print(gson.toJson(new Message(404, "Not Found", null)));
-            response.getWriter().close();
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 }

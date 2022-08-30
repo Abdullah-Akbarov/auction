@@ -26,9 +26,7 @@ public class InitialFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String uri = request.getRequestURI();
-        if (uri.startsWith("/login") || uri.startsWith("/view-lots") || uri.startsWith("/bid") || uri.startsWith("/lot-list")) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
+        if (uri.startsWith("/add-lot") || uri.startsWith("/close-lot")) {
             String key = request.getHeader("key");
             if (key == null || key.isEmpty() || key.isBlank()) {
                 response.getWriter().print(gson.toJson(new Message(401, "Unauthorized", null)));
@@ -48,6 +46,8 @@ public class InitialFilter implements Filter {
                     }
                 }
             }
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 }

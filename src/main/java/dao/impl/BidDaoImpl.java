@@ -7,6 +7,8 @@ import model.Lot;
 import model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class BidDaoImpl implements BidDao {
@@ -36,9 +38,9 @@ public class BidDaoImpl implements BidDao {
 
     @Override
     public Optional<Bid> getMaxBid(Integer id) {
+        User user = new User();
+        Lot lot = new Lot();
         try {
-            User user = new User();
-            Lot lot = new Lot();
             PreparedStatement statement = con.prepareStatement("select * from bid where lot_id = ? order by offered_price desc limit 1");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -55,5 +57,30 @@ public class BidDaoImpl implements BidDao {
             throw new RuntimeException(e);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<Bid> getBidsById(Integer id) {
+        User user = new User();
+        Lot lot = new Lot();
+        List<Bid> list = new ArrayList<>();
+        try {
+
+            PreparedStatement statement = con.prepareStatement("select * from bid where lot_id = ?");
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                int id1 = resultSet.getInt(1);
+                int userId = resultSet.getInt(2);
+                double offer = resultSet.getDouble(4);
+                Timestamp timestamp = resultSet.getTimestamp(5);
+                user.setId(userId);
+                lot.setId(id);
+                list.add(new Bid(id1, user, lot,offer, timestamp));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 }
