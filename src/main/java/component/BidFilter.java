@@ -16,7 +16,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 @WebFilter("/bid")
-public class BidController implements Filter {
+public class BidFilter implements Filter {
     private final Gson gson = new Gson();
     private final UserDao userDao = UserDaoImpl.getUserDao();
 
