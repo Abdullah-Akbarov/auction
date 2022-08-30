@@ -34,7 +34,7 @@ public class BidController implements Filter {
             String[] split = decode.split("&");
             if (split.length == 2) {
                 Optional<User> userOptional = userDao.findByUsernameAndPassword(split[0], split[1]);
-                if (userOptional.isPresent() && userOptional.isPresent()) {
+                if (userOptional.isPresent()) {
                     HttpSession session = request.getSession();
                     session.setAttribute("bidder", userOptional.get());
                     filterChain.doFilter(servletRequest, servletResponse);

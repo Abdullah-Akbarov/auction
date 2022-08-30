@@ -43,16 +43,16 @@ public class LotServiceImpl implements LotService {
     @Override
     public Message closeLot(Integer id) {
         Message message;
-        boolean lot = lotDao.closeLot(id);
         Optional<Bid> maxBid = bidDao.getMaxBid(id);
-        if (maxBid.isPresent()){
+        if (!maxBid.isPresent()) {
+            boolean lot = lotDao.closeLot(id);
             if (lot) {
-                message = new Message(201, "lot closed", maxBid.get());
+                message = new Message(201, "lot closed successfully", maxBid.get());
             } else {
-                message = new Message(403, "could not close", null);
+                message = new Message(403, "could not complete", null);
             }
         } else {
-            message = new Message(403, "You can't close the lot without any bids", null);
+            message = new Message(403, "you can't close the lot, there is not enough bidders", null);
         }
         return message;
     }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/lot-list")
+@WebServlet("/view-lots")
 public class LotListController extends HttpServlet {
     private final LotDao lotDao = LotDaoImpl.getLotDao();
     private final Gson gson = new Gson();

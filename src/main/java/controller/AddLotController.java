@@ -15,14 +15,14 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/add-lot")
-public class LotController extends HttpServlet {
+public class AddLotController extends HttpServlet {
     private final LotService lotService = LotServiceImpl.getLotService();
     private final Gson gson = new Gson();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String model = req.getParameter("model");
         String description = req.getParameter("description");
-        String initialPrice = req.getParameter("initial_price");
+        String initialPrice = req.getParameter("price");
         HttpSession session = req.getSession(false);
         User user = (User) session.getAttribute("user");
         Message message = lotService.addLot(model, description, Double.parseDouble(initialPrice), user);

@@ -26,7 +26,7 @@ public class InitialFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String uri = request.getRequestURI();
-        if (uri.startsWith("/login") || uri.startsWith("/view") || uri.startsWith("/bid") || uri.startsWith("/lot-list")) {
+        if (uri.startsWith("/login") || uri.startsWith("/view-lots") || uri.startsWith("/bid") || uri.startsWith("/lot-list")) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             String key = request.getHeader("key");
