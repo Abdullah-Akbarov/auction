@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import model.Message;
 import model.User;
 import service.BidService;
-import service.UserService;
 import service.impl.BidServiceImpl;
 
-import javax.imageio.metadata.IIOMetadataFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/bid")
+@WebServlet("/add-bid")
 public class BidController extends HttpServlet {
     private final BidService bidService = new BidServiceImpl();
     private final Gson gson = new Gson();

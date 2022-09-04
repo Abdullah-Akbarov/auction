@@ -60,7 +60,7 @@ public class BidDaoImpl implements BidDao {
     }
 
     @Override
-    public List<Bid> getBidsById(Integer id) {
+    public List<Bid> getBidsByLotId(Integer id) {
         User user = new User();
         Lot lot = new Lot();
         List<Bid> list = new ArrayList<>();
@@ -82,5 +82,28 @@ public class BidDaoImpl implements BidDao {
             throw new RuntimeException(e);
         }
         return list;
+    }
+
+    @Override
+    public Optional<Bid> getBidById(Integer id) {
+        User user = new User();
+        Lot lot = new Lot();
+        try {
+
+            PreparedStatement statement = con.prepareStatement("select * from bid where id =" + id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                int id1 = resultSet.getInt(1);
+                int userId = resultSet.getInt(2);
+                double offer = resultSet.getDouble(4);
+                Timestamp timestamp = resultSet.getTimestamp(5);
+                user.setId(userId);
+                lot.setId(id);
+                return Optional.of(new Bid(id1, user, lot,offer, timestamp));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
     }
 }

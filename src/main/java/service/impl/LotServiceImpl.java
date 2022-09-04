@@ -56,4 +56,16 @@ public class LotServiceImpl implements LotService {
         }
         return message;
     }
+
+    @Override
+    public Message getLotById(Integer id) {
+        Message message;
+        Optional<Lot> byId = lotDao.getById(id);
+        if (byId.isPresent()){
+            message = new Message(200, "Lot", byId.get());
+        } else {
+            message = new Message(404, "not found", null);
+        }
+        return message;
+    }
 }

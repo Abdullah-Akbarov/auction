@@ -11,6 +11,7 @@ import model.User;
 import service.BidService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BidServiceImpl implements BidService {
     private static BidService bidService;
@@ -49,11 +50,23 @@ public class BidServiceImpl implements BidService {
     @Override
     public Message getBids(Integer lotId) {
         Message message;
-        List<Bid> bidsById = bidDao.getBidsById(lotId);
+        List<Bid> bidsById = bidDao.getBidsByLotId(lotId);
         if(bidsById.isEmpty()){
             message = new Message(404, "not found", null);
         } else {
             message = new Message(200, "Bids list", bidsById);
+        }
+        return message;
+    }
+
+    @Override
+    public Message getBidById(Integer id) {
+        Message message;
+        Optional<Bid> bidById = bidDao.getBidById(id);
+        if (bidById.isPresent()){
+            message = new Message(200, "bid", bidById.get());
+        } else {
+            message = new Message(404, "not found", null);
         }
         return message;
     }

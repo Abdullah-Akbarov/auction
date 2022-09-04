@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface BidDao{
     boolean save(Bid bid);
     Optional<Bid> getMaxBid(Integer id);
-    List<Bid> getBidsById(Integer id);
+    List<Bid> getBidsByLotId(Integer id);
+
+    Optional<Bid> getBidById(Integer id);
 }
